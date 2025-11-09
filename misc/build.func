@@ -1342,7 +1342,12 @@ EOF'
   fi
   msg_ok "Customized LXC Container"
 
-  lxc-attach -n "$CTID" -- bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/install/${var_install}.sh)"
+  # Use test repo for n8n-install, otherwise use official repo
+  if [ "$var_install" == "n8n-install" ]; then
+    lxc-attach -n "$CTID" -- bash -c "$(curl -fsSL https://raw.githubusercontent.com/chrikodo/ProxmoxVE/fix-n8n-debian13-deps/install/${var_install}.sh)"
+  else
+    lxc-attach -n "$CTID" -- bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/install/${var_install}.sh)"
+  fi
 }
 
 # This function sets the description of the container.
